@@ -1,11 +1,23 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import AddPersonView from '../views/AddPersonView.vue'
+import EditPersonDialog from '../components/EditPersonDialog.vue'
 
 const routes: Array<RouteRecordRaw> = [
+  {
+    path: '/edit-person',
+    name: 'edit-person',
+    component: EditPersonDialog
+  },
   {
     path: '/',
     name: 'home',
     component: HomeView
+  },
+  {
+    path: '/add-person',
+    name: 'add-person',
+    component: AddPersonView
   },
   {
     path: '/about',
