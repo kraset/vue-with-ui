@@ -1,35 +1,36 @@
 <template>
-  <div class="edit-person-form">
-    <n-space vertical>
-      <n-input-number
-        v-if="!isUpdate"
-        v-model:value="person.id"
-        :show-button="false"
-        placeholder="Enter unique ID number"
-        class="input"
-      />
-      <n-input
-        v-model:value="person.name"
-        type="text"
-        placeholder="Enter name"
-        class="input"
-      />
-      <n-input
-        v-model:value="person.phoneNr"
-        type="text"
-        placeholder="Enter phone number"
-        class="input"
-      />
-    </n-space>
-    <n-button @click="onClickCancel()" type="error">Cancel</n-button>
-    <n-button @click="onClickSave()" type="primary">Save</n-button>
-  </div>
+    <div class="edit-person-form">
+      <n-space vertical>
+        <n-input-number
+          v-if="!isUpdate"
+          v-model:value="person.id"
+          :show-button="false"
+          placeholder="Enter unique ID number"
+          class="input"
+        />
+        <n-input
+          v-model:value="person.name"
+          type="text"
+          placeholder="Enter name"
+          class="input"
+        />
+        <n-input
+          v-model:value="person.phoneNr"
+          type="text"
+          placeholder="Enter phone number"
+          class="input"
+        />
+      </n-space>
+      <n-button @click="onClickCancel()" type="error">Cancel</n-button>
+      <n-button @click="onClickSave()" type="primary">Save</n-button>
+    </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue';
-import { NSpace, NInput, NInputNumber, NButton } from 'naive-ui';
+import { NSpace, NInput, NInputNumber, NButton, useMessage } from 'naive-ui';
 import { IPerson } from '@/model/person';
+import { updatePerson } from '@/data/person-api';
 
 export default defineComponent({
   name: 'PersonForm',
@@ -44,9 +45,18 @@ export default defineComponent({
     existingPerson: { type: Object as PropType<IPerson>, required: false },
   },
   setup() {
+    const message = useMessage();
     const person = ref<IPerson>({ id: 0, name: '', phoneNr: '' });
     return {
       person: person,
+      infoMessage(name: string) {
+        message.info(
+          `${name} har uppdaterats!`,
+          {
+            keepAliveOnHover: true,
+          }
+        );
+      },
     };
     //
   },
@@ -59,16 +69,21 @@ export default defineComponent({
   // Declare emitters
   emits: {
     // Null if person was not updated...
-    eventDoneEditing(person: IPerson | null) {
-      return person;
+    eventDoneEditing() {
+      return true;
     },
   },
   methods: {
     onClickCancel() {
-      this.$emit('eventDoneEditing', null);
+      this.$emit('eventDoneEditing');
     },
-    onClickSave() {
-      this.$emit('eventDoneEditing', this.person);
+    async onClickSave() {
+      const success = await updatePerson(this.person);
+      if (success) {
+        this.infoMessage(this.person.name);
+        //
+      }
+      this.$emit('eventDoneEditing');
     },
   },
 });

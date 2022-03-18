@@ -3,9 +3,22 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </nav>
-  <router-view/>
+  <AppProvider>
+    <router-view />
+  </AppProvider>
 </template>
 
+<script lang="ts">
+import { defineComponent } from 'vue';
+import AppProvider from '@/components/AppProvider.vue';
+
+export default defineComponent({
+  name: 'App',
+  components: {
+    AppProvider,
+  },
+});
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

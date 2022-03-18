@@ -6,6 +6,7 @@
       v-if="person !== undefined"
       :isUpdate="true"
       :existing-person="person"
+      @eventDoneEditing="onEventDoneEditing"
     />
   </div>
 </template>
@@ -37,6 +38,11 @@ export default defineComponent({
     if (p) {
       this.person = p;
     }
+  },
+  methods: {
+    onEventDoneEditing() {
+      this.$router.back();
+    },
   },
 });
 </script>

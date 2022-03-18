@@ -16,3 +16,12 @@ export function getAllPersons(): IPerson[] {
 export function getPersonById(id: number): IPerson | undefined {
   return listOfPersons.find((p) => p.id === id);
 }
+
+export async function updatePerson(updatedPerson: IPerson): Promise<boolean> {
+  listOfPersons.splice(
+    listOfPersons.findIndex((p) => p.id === updatedPerson.id),
+    1,
+    updatedPerson
+  );
+  return true;
+}

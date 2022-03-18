@@ -23,10 +23,8 @@ export default defineComponent({
     };
   },
   methods: {
-    onEventDoneEditing(person: IPerson | null) {
-      if (person){
-          // Call backend
-      }
+    onEventDoneEditing() {
+      this.$router.back();
     },
   },
 });
