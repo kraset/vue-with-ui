@@ -25,3 +25,8 @@ export async function updatePerson(updatedPerson: IPerson): Promise<boolean> {
   );
   return true;
 }
+
+export async function addPerson(addedPerson: IPerson): Promise<boolean> {
+  listOfPersons.push(addedPerson);
+  return true;
+}

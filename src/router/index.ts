@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AddPersonView from '../views/AddPersonView.vue'
-import EditPersonDialog from '../components/EditPersonDialog.vue'
+import EditPersonDialog from '../views/EditPersonView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {

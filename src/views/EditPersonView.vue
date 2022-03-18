@@ -15,7 +15,7 @@
 import { getPersonById } from '@/data/person-api';
 import { IPerson } from '@/model/person';
 import { defineComponent, ref } from 'vue';
-import PersonForm from './PersonForm.vue';
+import PersonForm from '../components/PersonForm.vue';
 
 interface IRouteParams {
   id: number;

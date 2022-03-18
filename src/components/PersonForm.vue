@@ -1,36 +1,36 @@
 <template>
-    <div class="edit-person-form">
-      <n-space vertical>
-        <n-input-number
-          v-if="!isUpdate"
-          v-model:value="person.id"
-          :show-button="false"
-          placeholder="Enter unique ID number"
-          class="input"
-        />
-        <n-input
-          v-model:value="person.name"
-          type="text"
-          placeholder="Enter name"
-          class="input"
-        />
-        <n-input
-          v-model:value="person.phoneNr"
-          type="text"
-          placeholder="Enter phone number"
-          class="input"
-        />
-      </n-space>
-      <n-button @click="onClickCancel()" type="error">Cancel</n-button>
-      <n-button @click="onClickSave()" type="primary">Save</n-button>
-    </div>
+  <div class="edit-person-form">
+    <n-space vertical>
+      <n-input-number
+        v-if="!isUpdate"
+        v-model:value="person.id"
+        :show-button="false"
+        placeholder="Enter unique ID number"
+        class="input"
+      />
+      <n-input
+        v-model:value="person.name"
+        type="text"
+        placeholder="Enter name"
+        class="input"
+      />
+      <n-input
+        v-model:value="person.phoneNr"
+        type="text"
+        placeholder="Enter phone number"
+        class="input"
+      />
+    </n-space>
+    <n-button @click="onClickCancel()" type="error">Cancel</n-button>
+    <n-button @click="onClickSave()" type="primary">Save</n-button>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, ref } from 'vue';
 import { NSpace, NInput, NInputNumber, NButton, useMessage } from 'naive-ui';
 import { IPerson } from '@/model/person';
-import { updatePerson } from '@/data/person-api';
+import { addPerson, updatePerson } from '@/data/person-api';
 
 export default defineComponent({
   name: 'PersonForm',
@@ -49,13 +49,10 @@ export default defineComponent({
     const person = ref<IPerson>({ id: 0, name: '', phoneNr: '' });
     return {
       person: person,
-      infoMessage(name: string) {
-        message.info(
-          `${name} har uppdaterats!`,
-          {
-            keepAliveOnHover: true,
-          }
-        );
+      infoMessage(msgText: string) {
+        message.info(msgText, {
+          keepAliveOnHover: true,
+        });
       },
     };
     //
@@ -78,10 +75,18 @@ export default defineComponent({
       this.$emit('eventDoneEditing');
     },
     async onClickSave() {
-      const success = await updatePerson(this.person);
-      if (success) {
-        this.infoMessage(this.person.name);
-        //
+      if (this.isUpdate) {
+        const success = await updatePerson(this.person);
+        if (success) {
+          this.infoMessage(`${this.person.name} har uppdaterats!`);
+          //
+        }
+      } else {
+        const success = await addPerson(this.person);
+        if (success) {
+          this.infoMessage(`${this.person.name} har lagts till!`);
+          //
+        }
       }
       this.$emit('eventDoneEditing');
     },

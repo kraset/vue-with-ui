@@ -1,6 +1,10 @@
 <template>
   <n-loading-bar-provider>
-    <n-message-provider :placement="'bottom'" :container-style="'background-color: #f0e68c'">
+    <n-message-provider
+      :placement="'top'"
+      container-style="margin-top: 240px;"
+      :duration="1000"
+    >
       <n-dialog-provider>
         <slot></slot>
       </n-dialog-provider>
