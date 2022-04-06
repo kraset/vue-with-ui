@@ -90,6 +90,7 @@ p {
 }
 .n-card {
   margin-bottom: 5px;
+  background-color: rgb(113, 236, 144);
 }
 .card-row {
   display: flex;
