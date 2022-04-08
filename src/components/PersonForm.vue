@@ -59,20 +59,20 @@ export default defineComponent({
   },
   mounted() {
     if (this.isUpdate && this.existingPerson) {
-      this.person = this.existingPerson;
+      this.person = {... this.existingPerson}; // Trick to make a copy
     }
     console.log('Mounted. ', this.person);
   },
   // Declare emitters
   emits: {
     // Null if person was not updated...
-    eventDoneEditing() {
-      return true;
+    eventDoneEditing(updated: boolean) {
+      return updated;
     },
   },
   methods: {
     onClickCancel() {
-      this.$emit('eventDoneEditing');
+      this.$emit('eventDoneEditing', false);
     },
     async onClickSave() {
       if (this.isUpdate) {
@@ -88,7 +88,7 @@ export default defineComponent({
           //
         }
       }
-      this.$emit('eventDoneEditing');
+      this.$emit('eventDoneEditing', true);
     },
   },
 });

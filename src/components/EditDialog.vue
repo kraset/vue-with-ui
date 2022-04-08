@@ -1,12 +1,11 @@
 <template>
-  <n-modal v-model:show="showModal" @after-hide="onEventDoneEditing">
+  <n-modal :show="true" @after-hide="onEventDoneEditing(false)">
     <n-card
       title="Edit Person"
       :bordered="false"
       size="huge"
       role="dialog"
       aria-modal="true"
-      style="width: fit-content; margin: auto; background-color: burlywood"
     >
       <PersonForm
         v-if="person !== undefined"
@@ -22,7 +21,7 @@
 import { IPerson } from '@/model/person';
 import PersonForm from './PersonForm.vue';
 import { NCard, NModal } from 'naive-ui';
-import { defineComponent, PropType, ref } from 'vue';
+import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   name: 'EditDialog',
@@ -33,18 +32,24 @@ export default defineComponent({
   },
   props: {
     person: { type: Object as PropType<IPerson> },
-    afterClosedCallback: {type: Function, required: true},
   },
-  // Data
-  setup() {
-    return {
-      showModal: ref(true),
-    };
+  emits: {
+    closed(updated: boolean) {
+      return updated;
+    },
   },
   methods: {
-    onEventDoneEditing() {
-      this.afterClosedCallback();
+    onEventDoneEditing(isUpdated: boolean) {
+      this.$emit('closed', isUpdated);
     },
   },
 });
 </script>
+
+<style scoped>
+.n-card {
+  width: fit-content;
+  margin: auto;
+  background-color: burlywood;
+}
+</style>

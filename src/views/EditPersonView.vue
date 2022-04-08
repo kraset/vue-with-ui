@@ -13,13 +13,9 @@
 
 <script lang="ts">
 import { getPersonById } from '@/data/person-api';
-import { IPerson } from '@/model/person';
+import { IPerson, IEditPersonRouteParams } from '@/model/person';
 import { defineComponent, ref } from 'vue';
 import PersonForm from '../components/PersonForm.vue';
-
-interface IRouteParams {
-  id: number;
-}
 
 export default defineComponent({
   name: 'EditPersonDialog',
@@ -33,7 +29,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    const params = this.$route.params as unknown as IRouteParams;
+    const params = this.$route.params as unknown as IEditPersonRouteParams;
     const p = getPersonById(+params.id);
     if (p) {
       this.person = p;

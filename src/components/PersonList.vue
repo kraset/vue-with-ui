@@ -8,28 +8,32 @@
       <div class="card-row">
         <div>id: {{ person.id }}, name: {{ person.name }}</div>
 
-        <n-button @click="onClickEditPerson(person)" type="warning">Edit Person</n-button>
+        <n-button @click="onClickEditPerson(person)" type="warning"
+          >Edit Person</n-button
+        >
       </div>
     </n-card>
 
     <EditDialog
       v-if="selectedPerson"
       :person="selectedPerson"
-      :afterClosedCallback="onEditDialogClosed"
+      @closed="onEditDialogClosed"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { IPerson } from "@/model/person";
-import EditDialog from "./EditDialog.vue";
-import { NButton, NCard } from "naive-ui";
-import { defineComponent, PropType, ref } from "vue";
+import { IEditPersonRouteParams, IPerson } from '@/model/person';
+import EditDialog from './EditDialog.vue';
+import { NButton, NCard } from 'naive-ui';
+import { defineComponent, PropType, ref } from 'vue';
+import { RouteParamsRaw } from 'vue-router';
 
+// Test either with routing or dialog...
 const USE_DIALOG = true;
 
 export default defineComponent({
-  name: "PersonList",
+  name: 'PersonList',
   components: {
     NCard,
     NButton,
@@ -50,7 +54,7 @@ export default defineComponent({
 
   // Data
   setup() {
-    const description = "Below is a list of all persons.";
+    const description = 'Below is a list of all persons.';
     const selectedPerson = ref<IPerson>();
     // expose to template and other options API hooks
     return {
@@ -65,7 +69,11 @@ export default defineComponent({
     onClickEditPerson(person: IPerson) {
       if (!USE_DIALOG) {
         // Route to a separate "view" = a full page
-        this.$router.push({ name: "edit-person", params: { id: person.id } });
+        const editPersonRouteParams: IEditPersonRouteParams = { id: person.id };
+        this.$router.push({
+          name: 'edit-person',
+          params: editPersonRouteParams as unknown as RouteParamsRaw,
+        });
       } else {
         // Show a modal edit-dialog
         this.showEditPersonDialog(person);
@@ -74,7 +82,8 @@ export default defineComponent({
     showEditPersonDialog(p: IPerson) {
       this.selectedPerson = p;
     },
-    onEditDialogClosed() {
+    onEditDialogClosed(isUpdated: boolean) {
+      console.log('onEditDialogClosed', isUpdated);
       this.selectedPerson = undefined;
     },
   },

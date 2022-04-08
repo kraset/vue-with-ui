@@ -3,3 +3,7 @@ export interface IPerson{
     name: string;
     phoneNr: string;
 }
+
+export interface IEditPersonRouteParams {
+    id: number;
+}
